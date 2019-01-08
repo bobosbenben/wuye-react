@@ -1,0 +1,7 @@
+.am-button-primary {
+    color: #fff;
+    background-color: #108ee9;
+    /*border: 1PX solid #108ee9;*/
+    border: 1PX solid #00BB32;
+    border-radius: 5px;
+}
