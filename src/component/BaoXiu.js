@@ -26,29 +26,51 @@ class BaoXiu extends Component {
             console.log('从后台获取默认的小区');
             console.log('如果没有传入我的小区的id，也没有默认的小区，则页面跳转到新增我的小')
             //并且要添加路径参数，fromfaultreport的属性要设置为true，这样当设置完以后，就会跳转到保修页面
+            fetch('http://192.168.2.126:8080/wuye/getdefaultaddress',{
+                mode: "cors",
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify()
+            })
+                .then(response => response.json())
+                .then(data =>{
+                    console.log('返回的数据是:');
+                    console.log(data);
+                    this.setState({
+                        isLoading:false,
+                        // hadSetInfo:data.success,
+                        hadSetInfo:true,
+                        messageShow:!data.success
+                    });
+                })
+                .catch(error =>{
+                    console.log('错误信息是：');console.log(error);
+                })
         }
-        fetch('http://192.168.2.126:8080/hello',{
-            mode: "cors",
-            method: 'post',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify()
-        })
-            .then(response => response.json())
-            .then(data =>{
-                console.log('返回的数据是:');
-                console.log(data);
-                this.setState({
-                    isLoading:false,
-                    // hadSetInfo:data.success,
-                    hadSetInfo:true,
-                    messageShow:!data.success
-                });
-            })
-            .catch(error =>{
-                console.log('错误信息是：');console.log(error);
-            })
+        // fetch('http://192.168.2.126:8080/hello',{
+        //     mode: "cors",
+        //     method: 'post',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify()
+        // })
+        //     .then(response => response.json())
+        //     .then(data =>{
+        //         console.log('返回的数据是:');
+        //         console.log(data);
+        //         this.setState({
+        //             isLoading:false,
+        //             // hadSetInfo:data.success,
+        //             hadSetInfo:true,
+        //             messageShow:!data.success
+        //         });
+        //     })
+        //     .catch(error =>{
+        //         console.log('错误信息是：');console.log(error);
+        //     })
     }
 
     onMessageClick = ()=> {
