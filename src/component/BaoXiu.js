@@ -26,7 +26,7 @@ class BaoXiu extends Component {
             console.log('从后台获取默认的小区');
             console.log('如果没有传入我的小区的id，也没有默认的小区，则页面跳转到新增我的小')
             //并且要添加路径参数，fromfaultreport的属性要设置为true，这样当设置完以后，就会跳转到保修页面
-            fetch('http://192.168.2.126:8080/wuye/getdefaultaddress',{
+            fetch('/apis/wuye/getdefaultaddress',{
                 mode: "cors",
                 method: 'post',
                 headers: {

@@ -13,7 +13,7 @@ import MineCommunity from './component/MineCommunity';
 import AddMineCommunity from './component/AddMineCommunity';
 import UpdateMineCommunity from './component/UpdateMineCommunity';
 
-import {Route, BrowserRouter, Switch, Redirect} from 'react-router-dom';
+import {Route, BrowserRouter, Switch, Redirect, HashRouter} from 'react-router-dom';
 
 const PrimaryLayout = () => (
     <div className="primary-layout">
@@ -42,9 +42,9 @@ class App extends Component {
     render() {
         return (
             <div className="App">
-                <BrowserRouter>
+                <HashRouter>
                     <PrimaryLayout/>
-                </BrowserRouter>
+                </HashRouter>
             </div>
         );
     }

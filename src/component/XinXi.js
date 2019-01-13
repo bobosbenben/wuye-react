@@ -10,6 +10,7 @@ class XinXi extends Component {
         let SCOPE = 'snsapi_base';
         let url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='+APPID+'&redirect_uri='+REDIRECT_URI+'&response_type=code&scope='+SCOPE+'&state=STATE#wechat_redirect';
 
+        url = '/apis/redirect';
         window.location = url;
         // fetch(url,{
         //     // mode: "cors",
