@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { Toast, Dialog } from 'react-weui';
+import * as WeUI from 'react-weui';
+import { Toast } from 'antd-mobile';
 import { createForm } from 'rc-form';
-import 'weui';
-import 'react-weui/build/packages/react-weui.css';
-import 'antd-mobile/dist/antd-mobile.css';
-import './css/component.css';
 import 'whatwg-fetch';
 import MainBaoXiu from './MainBaoXiu'
+
+const Dialog = WeUI.Dialog;
+const WeUIToast = WeUI.Toast;
 
 class BaoXiu extends Component {
 
@@ -17,60 +17,43 @@ class BaoXiu extends Component {
             isLoading: true,
             hadSetInfo: false,
             messageShow:false,
-            mineInfoId: this.props.match.params.mineinfoid
+            openid: this.props.match.params.openid
         }
     }
 
     componentDidMount(){
-        if (this.state.mineInfoId === undefined){
-            console.log('从后台获取默认的小区');
-            console.log('如果没有传入我的小区的id，也没有默认的小区，则页面跳转到新增我的小')
-            //并且要添加路径参数，fromfaultreport的属性要设置为true，这样当设置完以后，就会跳转到保修页面
+        if (this.state.openid === undefined){
+            this.setState({
+                isLoading:false,
+                hadSetInfo:true
+            });
+            Toast.fail('获取不到用户信息',2);
+        }
+        else {
             fetch('/apis/wuye/getdefaultaddress',{
                 mode: "cors",
                 method: 'post',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify()
+                body: JSON.stringify({
+                    openid:this.state.openid
+                })
             })
                 .then(response => response.json())
                 .then(data =>{
                     console.log('返回的数据是:');
                     console.log(data);
                     this.setState({
-                        isLoading:false,
-                        // hadSetInfo:data.success,
-                        hadSetInfo:true,
-                        messageShow:!data.success
+                        isLoading: false,
+                        hadSetInfo: data.total===1,
+                        messageShow: !(data.total===1)
                     });
                 })
                 .catch(error =>{
                     console.log('错误信息是：');console.log(error);
                 })
         }
-        // fetch('http://192.168.2.126:8080/hello',{
-        //     mode: "cors",
-        //     method: 'post',
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify()
-        // })
-        //     .then(response => response.json())
-        //     .then(data =>{
-        //         console.log('返回的数据是:');
-        //         console.log(data);
-        //         this.setState({
-        //             isLoading:false,
-        //             // hadSetInfo:data.success,
-        //             hadSetInfo:true,
-        //             messageShow:!data.success
-        //         });
-        //     })
-        //     .catch(error =>{
-        //         console.log('错误信息是：');console.log(error);
-        //     })
     }
 
     onMessageClick = ()=> {
@@ -91,7 +74,7 @@ class BaoXiu extends Component {
         }
 
         return (
-            this.state.isLoading?<Toast icon="loading" show={this.state.isLoading}>正在加载页面</Toast>:
+            this.state.isLoading?<WeUIToast show={this.state.isLoading}>正在加载页面</WeUIToast>:
             this.state.hadSetInfo? <MainBaoXiu/>:<Message/>
         );
     }

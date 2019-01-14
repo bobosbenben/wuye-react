@@ -21,7 +21,7 @@ const PrimaryLayout = () => (
         <main style={{height: '100%'}}>
             <Switch>
                 <Route path="/" exact component={HomePage} />
-                <Route path="/baoxiu/:mineinfoid?" exact component={BaoXiu} />
+                <Route path="/baoxiu/:openid?" exact component={BaoXiu} />
                 <Route path="/tousu" component={TouSu} />
                 <Route path="/xinxi" component={XinXi} />
                 <Route path="/liebiao" component={LieBiao} />
