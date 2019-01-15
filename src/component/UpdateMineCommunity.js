@@ -189,7 +189,7 @@ class UpdateMineCommunity extends Component {
         const header = ()=>{
             return(
                 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-                    <div style={{fontSize:'16px'}}>编辑</div>
+                    <div style={{fontSize:'16px'}}>修改</div>
                     <div>
                         <WeUIButton type="default" size="small" onClick={this.onDeleteButtonClick.bind(this)}>删除</WeUIButton>
                     </div>

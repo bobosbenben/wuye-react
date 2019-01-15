@@ -11,7 +11,7 @@ class AddMineCommunity extends Component {
             province: ['nmg'],
             city: ['eeds'],
             country: ['yjhlq'],
-            town: ['azhen'],
+            town: ['altxrz'],
             community: ['wanjiayuyuan'],
             fromFaultReport: this.props.match.params.fromfaultreport
         }
@@ -38,7 +38,7 @@ class AddMineCommunity extends Component {
             children: [
                 {
                     label: '阿镇',
-                    value: 'azhen'
+                    value: 'altxrz'
                 },
                 {
                     label: '纳林希里',
@@ -151,7 +151,9 @@ class AddMineCommunity extends Component {
 
         const header = ()=>{
             return(
-                <div>新增我的小区</div>
+                <div style={{display:'flex',justifyContent:'left',alignItems:'center'}}>
+                    <div style={{fontSize:'16px'}}>新增我的小区</div>
+                </div>
             );
         };
 
@@ -159,8 +161,8 @@ class AddMineCommunity extends Component {
             <div>
                 <div>
                     <List renderHeader={header}>
-                        <InputItem {...getFieldProps('password')} placeholder="联系到您时怎么称呼您呢">
-                            您的昵称：
+                        <InputItem {...getFieldProps('customerName')} placeholder="联系到您时怎么称呼您呢">
+                            您的姓名：
                         </InputItem>
                         <InputItem {...getFieldProps('password')} placeholder="用于报修时联系到您">
                             联系方式：
