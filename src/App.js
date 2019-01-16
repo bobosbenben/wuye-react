@@ -30,7 +30,7 @@ const PrimaryLayout = () => (
                 <Route path={"/evaluatelist/:id"} component={EvaluateList}/>
                 <Route path={"/evaluate/:rowid"} component={Evaluate} />
                 <Route path={"/minecommunity"} component={MineCommunity}/>
-                <Route path="/addminecommunity/:fromfaultreport?" component={AddMineCommunity}/>
+                <Route path="/addminecommunity/:openid?/:parameter?" component={AddMineCommunity}/>
                 <Route path={"/updateminecommunity/:id"} component={UpdateMineCommunity}/>
                 <Redirect to="/"/>
             </Switch>

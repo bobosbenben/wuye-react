@@ -58,8 +58,9 @@ class BaoXiu extends Component {
 
     onMessageClick = ()=> {
         this.setState({messageShow:false});
-        this.props.history.push("/addminecommunity")
-    }
+        let url = '/addminecommunity/'+this.state.openid+'/1';
+        this.props.history.push(url);//1表示从报修页面跳转到新增小区页面
+    };
 
     render() {
         const Message = ()=>{
