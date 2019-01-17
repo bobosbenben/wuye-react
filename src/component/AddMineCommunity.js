@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Picker, List, InputItem, WhiteSpace, Button, WingBlank, Switch } from 'antd-mobile';
+import { Picker, List, InputItem, WhiteSpace, Button, WingBlank, Switch, Toast } from 'antd-mobile';
 import { createForm } from 'rc-form';
 import 'whatwg-fetch';
 
@@ -143,6 +143,12 @@ class AddMineCommunity extends Component {
 
     onSaveButtonClick = ()=>{
         this.props.form.validateFields((err, values) => {
+            if (values.customerName === '' || values.customerName === null || values.customerName === undefined){
+                Toast.fail('请填写您的称呼',2)
+            }
+            if (values.phoneNumber === '' || values.phoneNumber === null || values.phoneNumber === undefined){
+                Toast.fail('请填写您的联系方式',2)
+            }
             if (!err) {
                 fetch('/apis/minecommunity/new',{
                     mode: "cors",
@@ -154,14 +160,30 @@ class AddMineCommunity extends Component {
                         openid: this.state.openid,
                         customerName: values.customerName,
                         phoneNumber: values.phoneNumber,
-                        provinceEntityId: this.state.currentDefaultProvinceAndCityIds[0],
-                        cityEntityId: this.state.currentDefaultProvinceAndCityIds[1],
-                        countryOrDistrictEntityId: this.state.currentCountryAndTownIds[0],
-                        townEntityId: this.state.currentCountryAndTownIds[1],
-                        communityEntityId: this.state.currentCommunity[0],
-                        buildingEntityId: this.state.currentBuildingAndUnitAndRoom[0],
-                        unitEntityId: this.state.currentBuildingAndUnitAndRoom[1],
-                        roomEntityId: this.state.currentBuildingAndUnitAndRoom[2],
+                        provinceEntity:{
+                            id: this.state.currentDefaultProvinceAndCityIds[0]
+                        },
+                        cityEntity:{
+                            id: this.state.currentDefaultProvinceAndCityIds[1]
+                        },
+                        countryOrDistrictEntity:{
+                            id: this.state.currentCountryAndTownIds[0]
+                        },
+                        townEntity:{
+                            id: this.state.currentCountryAndTownIds[1]
+                        },
+                        communityEntity:{
+                            id: this.state.currentCommunity[0]
+                        },
+                        buildingEntity:{
+                            id: this.state.currentBuildingAndUnitAndRoom[0]
+                        },
+                        unitEntity:{
+                            id: this.state.currentBuildingAndUnitAndRoom[1]
+                        },
+                        roomEntity:{
+                            id: this.state.currentBuildingAndUnitAndRoom[2]
+                        },
                         normalUsersDefaultAddress: values.isDefaultAddress
                     })
                 })
@@ -242,10 +264,18 @@ class AddMineCommunity extends Component {
             <div>
                 <div>
                     <List renderHeader={header}>
-                        <InputItem {...getFieldProps('customerName')} placeholder="联系到您时怎么称呼您呢">
+                        <InputItem {...getFieldProps('customerName',{
+                            rules:[{
+                                required:true,message:'请填写您的称呼'
+                            }]
+                        })} placeholder="联系到您时怎么称呼您呢">
                             您的称谓：
                         </InputItem>
-                        <InputItem {...getFieldProps('phoneNumber')} placeholder="用于报修时联系到您">
+                        <InputItem {...getFieldProps('phoneNumber',{
+                            rules:[{
+                                required:true,message:'请填写您的联系方式'
+                            }]
+                        })} placeholder="用于报修时联系到您">
                             联系方式：
                         </InputItem>
                         <Picker extra="请选择"
