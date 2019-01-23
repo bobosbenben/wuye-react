@@ -24,7 +24,6 @@ class AddMineCommunity extends Component {
     }
 
     componentDidMount() {
-        console.log(this.state.fromFaultReport);
         this.setState({
             isLoading:true
         });
@@ -42,7 +41,6 @@ class AddMineCommunity extends Component {
                 this.setState({
                     districts:data
                 });
-                console.log(data);
             })
             .catch(error =>{
                 console.log('错误信息是：');console.log(error);
@@ -150,6 +148,7 @@ class AddMineCommunity extends Component {
                 Toast.fail('请填写您的联系方式',2)
             }
             if (!err) {
+                Toast.loading("正在新增",0);
                 fetch('/apis/minecommunity/new',{
                     mode: "cors",
                     method: 'post',
@@ -189,10 +188,21 @@ class AddMineCommunity extends Component {
                 })
                     .then(response => response.json())
                     .then(data =>{
+                        Toast.hide();
+                        if(data.success === false){
+                            Toast.fail(data.msg,2);
+                        }
+                        else Toast.success('新增我的房屋成功',2,()=>{
+                            if (this.state.fromFaultReport === true){
+                                let url = '/baoxiu/'+this.state.openid;
+                                this.props.history.push(url);
+                            }
 
+                        });
                     })
                     .catch(error =>{
                         console.log('错误信息是：');console.log(error);
+                        Toast.hide();
                     });
 
 
@@ -255,7 +265,7 @@ class AddMineCommunity extends Component {
         const header = ()=>{
             return(
                 <div style={{display:'flex',justifyContent:'left',alignItems:'center'}}>
-                    <div style={{fontSize:'16px'}}>新增我的小区</div>
+                    <div style={{fontSize:'16px'}}>新增我的房屋</div>
                 </div>
             );
         };

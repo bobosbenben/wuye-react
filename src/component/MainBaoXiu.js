@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { createForm } from 'rc-form';
 import './css/MainBaoXiu.css';
-import { Panel, PanelBody, MediaBox, MediaBoxHeader, MediaBoxBody, MediaBoxTitle, MediaBoxDescription } from 'react-weui';
+import { Panel, MediaBoxTitle, MediaBoxDescription } from 'react-weui';
 import { Button, WhiteSpace, WingBlank, ImagePicker, TextareaItem, List, Picker, Toast } from 'antd-mobile';
 import CustomeredRightArrow from './utils/CustomeredRightArrow';
 import {Link} from 'react-router-dom';
@@ -33,7 +33,7 @@ class MainBaoXiu extends Component {
         this.setState({
             files,
         });
-    }
+    };
 
     onPickerChange = (val)=>{
         console.log('标签变化：'); console.log(val);

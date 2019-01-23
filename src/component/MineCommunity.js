@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './css/MineCommunity.css';
 import CustomeredTag from './utils/CustomeredTag';
-
-import { WhiteSpace, WingBlank, ListView, Button, Tag } from 'antd-mobile';
+import { WhiteSpace, WingBlank, ListView, Button, Toast } from 'antd-mobile';
+import 'whatwg-fetch';
 
 const data = [
     {
@@ -31,6 +31,7 @@ const data = [
 
 const NUM_ROWS = 2;
 let pageIndex = 0;
+let currentPageNum = 1;
 
 function genData(pIndex = 0) {
     const dataBlob = {};
@@ -38,6 +39,7 @@ function genData(pIndex = 0) {
         const ii = (pIndex * NUM_ROWS) + i;
         dataBlob[`${ii}`] = `row - ${ii}`;
     }
+    console.log('dataBlob:'); console.log(dataBlob);
     return dataBlob;
 }
 
@@ -53,25 +55,70 @@ class MineCommunity extends Component {
             dataSource,
             isLoading: true,
             showSingle: false,
-            fromFaultReport: this.props.location.state===undefined?false:this.props.location.state.fromFaultReport
+            pageSize:10,
+            hasMore: true,
+            openid: this.props.match.params.openid,
+            fromFaultReport: this.props.match.params.parameter === '1',
         };
 
     }
 
     componentDidMount() {
-
         // you can scroll to the specified position
         // setTimeout(() => this.lv.scrollTo(0, 120), 800);
-
         // simulate initial Ajax
-        setTimeout(() => {
-            this.rData = genData();
-            this.setState({
-                dataSource: this.state.dataSource.cloneWithRows(this.rData),
-                isLoading: false,
-            });
-        }, 600);
+        // setTimeout(() => {
+        //     this.rData = genData();
+        //     this.setState({
+        //         dataSource: this.state.dataSource.cloneWithRows(this.rData),
+        //         isLoading: false,
+        //     });
+        // }, 600);
+        this.fetchData(currentPageNum);
     }
+
+    fetchData = (pageNum)=>{
+        Toast.loading('正在加载我的房屋',0);
+        this.setState({isLoading:true});
+        fetch('http://192.168.2.126:7070/minecommunity/getminehouselist',{
+            mode: "cors",
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                openid: this.state.openid,
+                page:{
+                    pageNo: pageNum,
+                    pageSize: this.state.pageSize
+                }
+            })
+        })
+            .then(response => response.json())
+            .then(data =>{
+                if (data.success === true){
+                    this.setState({
+                        dataSource: this.state.dataSource.cloneWithRows(data.data),
+                        isLoading:false
+                    });
+                    if (data.total>pageNum*this.state.pageSize) this.setState({hasMore:false});
+                    Toast.hide();
+                }
+                else {
+                    this.setState({isLoading:false});
+                    Toast.fail(data.msg,1,()=>{
+                        Toast.hide();
+                    })
+                }
+            })
+            .catch(error =>{
+                Toast.fail(error,1,()=>{
+                    Toast.hide();
+                });
+                this.setState({isLoading:true});
+                console.log('错误信息是：');console.log(error);
+            });
+    };
 
     onEndReached = (event) => {
         // load new data
@@ -80,18 +127,12 @@ class MineCommunity extends Component {
             return;
         }
         console.log('reach end', event);
-        this.setState({ isLoading: true });
-        setTimeout(() => {
-            this.rData = { ...this.rData, ...genData(++pageIndex) };
-            this.setState({
-                dataSource: this.state.dataSource.cloneWithRows(this.rData),
-                isLoading: false,
-            });
-        }, 1000);
+        currentPageNum = currentPageNum + 1;
+        this.fetchData(currentPageNum);
     };
 
     onAddCommunityButtonClick=()=>{
-        let path = '/addminecommunity/'+this.state.fromFaultReport;
+        let path = '/addminecommunity/1';//1表示新增我的房屋后需要跳转到报修页面
         this.props.history.push(path);
     };
 
@@ -102,7 +143,7 @@ class MineCommunity extends Component {
 
     onChooseClick = (id)=>{
         console.log('选中了当前的记录: '+id);
-        let path = '/baoxiu/'+id;
+        let path = '/baoxiu/'+this.state.openid;
         this.props.history.push(path);
     };
 
@@ -121,11 +162,15 @@ class MineCommunity extends Component {
         );
         let index = data.length - 1;
         const row = (rowData, sectionID, rowID) => {
-            if (index < 0) {
-                index = data.length - 1;
-            }
-            const obj = data[index--];
-            let showFlag = rowID==='0'?true:false;
+            console.log('rowData:'); console.log(rowData);
+            console.log('sectionID:'); console.log(sectionID);
+            console.log('rowID:'); console.log(rowID);
+            // if (index < 0) {
+            //     index = data.length - 1;
+            // }
+            // const obj = data[index--];
+            // let showFlag = rowID==='0'?true:false;
+            let showFlag = rowData.normalUsersDefaultAddress;
 
             return (
                 <div key={rowID} style={{ padding: '0 15px' }} >
@@ -141,19 +186,19 @@ class MineCommunity extends Component {
                             alignItems:'center'
                         }}
                     >
-                        <div>{obj.title}</div>
+                        <div>{rowData.community}</div>
                         <CustomeredTag content="默认" show={showFlag}/>
                     </div>
                     <div style={{ display: 'flex', padding: '15px 0' }}>
-                        <img style={{ height: '64px', marginRight: '15px' }} src={obj.img} alt="" onClick={this.onChooseClick.bind(this,rowID)}/>
-                        <div style={{width:'100%',display:'flex',flexDirection:'column'}}>
+                        <img style={{ height: '64px', marginRight: '15px' }} src={rowData.communityImgUrl} alt="" onClick={this.onChooseClick.bind(this,rowID)}/>
+                        <div style={{width:'100%',display:'flex',flexDirection:'column',alignItems:'flex-start'}}>
                             <div style={{ lineHeight: 1 }} onClick={this.onChooseClick.bind(this,rowID)}>
-                                <div style={{ marginBottom: '8px', fontWeight: 'bold' }}>{obj.building}</div>
-                                <div><span style={{ fontSize: '16', color: '#999999' }}>物业电话：{obj.phoneNumber}</span></div>
+                                <div style={{ marginBottom: '8px', fontWeight: 'bold', textAlign:'left' }}>{rowData.building+rowData.unit+rowData.room}</div>
+                                <div><span style={{ fontSize: '16', color: '#999999' }}>联系方式：{rowData.phoneNumber}</span></div>
                             </div>
                             <WhiteSpace size="xs" onClick={this.onChooseClick.bind(this,rowID)}/>
                             <div style={{width:'100%',display:'flex',flexDirection:'row',justifyContent:'flex-end'}}>
-                                <div style={{width:'80%'}} onClick={this.onChooseClick.bind(this,rowID)}></div>
+                                <div style={{width:'80%'}} onClick={this.onChooseClick.bind(this,rowID)} />
                                 <Button type="ghost" size="small" onClick={this.onUpdateCommunityButtonClick.bind(this,rowID)}>修改</Button>
                             </div>
                         </div>
@@ -164,11 +209,11 @@ class MineCommunity extends Component {
 
         const header = () =>{
             return (
-                <span>我的小区</span>
+                <div style={{display:'flex',justifyContent:'left',alignItems:'center'}}>
+                    <div style={{fontSize:'16px', fontWeight:'bold'}}>我的房屋</div>
+                </div>
             );
         };
-
-        let imgSrc = 'https://duobifuwu-1252535629.cos.ap-beijing.myqcloud.com/ceshi.png';
 
         return (
             <div>
@@ -182,7 +227,7 @@ class MineCommunity extends Component {
                     renderRow={row}
                     renderSeparator={separator}
                     className="am-list"
-                    pageSize={4}
+                    pageSize={this.state.pageSize}
                     useBodyScroll
                     onScroll={() => { console.log('scroll'); }}
                     scrollRenderAheadDistance={500}
@@ -194,7 +239,7 @@ class MineCommunity extends Component {
                         <WhiteSpace/>
                         <WhiteSpace/>
                         <Button type='primary' style={{backgroundColor:'#00BB32'}} onClick={this.onAddCommunityButtonClick}>
-                            新增小区
+                            新增我的房屋
                         </Button>
                         <WhiteSpace/>
                     </WingBlank>

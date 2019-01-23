@@ -29,9 +29,9 @@ const PrimaryLayout = () => (
                 <Route path={"/detail/:rowid"} component={Detail}/>
                 <Route path={"/evaluatelist/:id"} component={EvaluateList}/>
                 <Route path={"/evaluate/:rowid"} component={Evaluate} />
-                <Route path={"/minecommunity"} component={MineCommunity}/>
+                <Route path={"/minecommunity/:openid?/:parameter?"} component={MineCommunity}/>
                 <Route path="/addminecommunity/:openid?/:parameter?" component={AddMineCommunity}/>
-                <Route path={"/updateminecommunity/:id"} component={UpdateMineCommunity}/>
+                <Route path={"/updateminecommunity/:openid"} component={UpdateMineCommunity}/>
                 <Redirect to="/"/>
             </Switch>
         </main>

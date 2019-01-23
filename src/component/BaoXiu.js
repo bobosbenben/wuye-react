@@ -42,8 +42,6 @@ class BaoXiu extends Component {
             })
                 .then(response => response.json())
                 .then(data =>{
-                    console.log('返回的数据是:');
-                    console.log(data);
                     this.setState({
                         isLoading: false,
                         hadSetInfo: data.total===1,
