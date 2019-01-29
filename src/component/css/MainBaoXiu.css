@@ -1,3 +1,34 @@
 :global(.am-picker-popup-item) {
     color: #0bb20c;
 }
+
+.head-title{
+    text-align: left;
+    color: black;
+    font-weight: 400;
+    font-size: 17px;
+    width: auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-wrap: normal;
+    word-wrap: break-word;
+    word-break: break-all;
+}
+
+.head-description{
+    color: #999999;
+    font-size: 13px;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+}
+
+.panel{
+    background-color: #FFFFFF;
+    margin-top: 10px;
+    position: relative;
+    overflow: hidden;
+}

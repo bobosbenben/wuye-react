@@ -4,46 +4,7 @@ import CustomeredTag from './utils/CustomeredTag';
 import { WhiteSpace, WingBlank, ListView, Button, Toast } from 'antd-mobile';
 import 'whatwg-fetch';
 
-const data = [
-    {
-        id: 1,
-        img: 'https://duobifuwu-1252535629.cos.ap-beijing.myqcloud.com/ceshi.png',
-        title: 'Meet hotel',
-        status: '已处理',
-        des: '不是所有的兼职汪都需要风吹日晒不是所有的兼职汪都需要风吹日晒不是所有的兼职汪都需要风吹日晒不是所有的兼职汪都需要风吹日晒',
-    },
-    {
-        id:2,
-        img: 'https://duobifuwu-1252535629.cos.ap-beijing.myqcloud.com/wuye/QQ%E6%88%AA%E5%9B%BE20181210210529.png',
-        title: '东方纽蓝地小区',
-        building: '11号楼2单元903室',
-        phoneNumber: '0477-3965669'
-    },
-    {
-        id:3,
-        img: 'https://duobifuwu-1252535629.cos.ap-beijing.myqcloud.com/wuye/QQ%E6%88%AA%E5%9B%BE20181210210529.png',
-        title: '万佳裕园小区',
-        building: '5号楼1单元903室',
-        phoneNumber: '0477-3965669',
-        des: '不是所有的兼职汪都需要风吹日晒',
-    },
-];
-
-const NUM_ROWS = 2;
-let pageIndex = 0;
 let currentPageNum = 1;
-
-function genData(pIndex = 0) {
-    const dataBlob = {};
-    for (let i = 0; i < NUM_ROWS; i++) {
-        const ii = (pIndex * NUM_ROWS) + i;
-        dataBlob[`${ii}`] = `row - ${ii}`;
-    }
-    console.log('dataBlob:'); console.log(dataBlob);
-    return dataBlob;
-}
-
-
 class MineCommunity extends Component {
     constructor(props) {
         super(props);
@@ -143,7 +104,7 @@ class MineCommunity extends Component {
 
     onChooseClick = (id)=>{
         console.log('选中了当前的记录: '+id);
-        let path = '/baoxiu/'+this.state.openid;
+        let path = '/baoxiu/'+this.state.openid+'/'+id;
         this.props.history.push(path);
     };
 
@@ -160,16 +121,7 @@ class MineCommunity extends Component {
                 }}
             />
         );
-        let index = data.length - 1;
         const row = (rowData, sectionID, rowID) => {
-            console.log('rowData:'); console.log(rowData);
-            console.log('sectionID:'); console.log(sectionID);
-            console.log('rowID:'); console.log(rowID);
-            // if (index < 0) {
-            //     index = data.length - 1;
-            // }
-            // const obj = data[index--];
-            // let showFlag = rowID==='0'?true:false;
             let showFlag = rowData.normalUsersDefaultAddress;
 
             return (
@@ -190,16 +142,16 @@ class MineCommunity extends Component {
                         <CustomeredTag content="默认" show={showFlag}/>
                     </div>
                     <div style={{ display: 'flex', padding: '15px 0' }}>
-                        <img style={{ height: '64px', marginRight: '15px' }} src={rowData.communityImgUrl} alt="" onClick={this.onChooseClick.bind(this,rowID)}/>
+                        <img style={{ height: '64px', width:'80px',marginRight: '15px' }} src={rowData.communityImgUrl} alt="" onClick={this.onChooseClick.bind(this,rowData.id)}/>
                         <div style={{width:'100%',display:'flex',flexDirection:'column',alignItems:'flex-start'}}>
-                            <div style={{ lineHeight: 1 }} onClick={this.onChooseClick.bind(this,rowID)}>
+                            <div style={{ lineHeight: 1 }} onClick={this.onChooseClick.bind(this,rowData.id)}>
                                 <div style={{ marginBottom: '8px', fontWeight: 'bold', textAlign:'left' }}>{rowData.building+rowData.unit+rowData.room}</div>
                                 <div><span style={{ fontSize: '16', color: '#999999' }}>联系方式：{rowData.phoneNumber}</span></div>
                             </div>
-                            <WhiteSpace size="xs" onClick={this.onChooseClick.bind(this,rowID)}/>
+                            <WhiteSpace size="xs" onClick={this.onChooseClick.bind(this,rowData.id)}/>
                             <div style={{width:'100%',display:'flex',flexDirection:'row',justifyContent:'flex-end'}}>
-                                <div style={{width:'80%'}} onClick={this.onChooseClick.bind(this,rowID)} />
-                                <Button type="ghost" size="small" onClick={this.onUpdateCommunityButtonClick.bind(this,rowID)}>修改</Button>
+                                <div style={{width:'70%'}} onClick={this.onChooseClick.bind(this,rowData.id)} />
+                                <Button type="ghost" size="small" onClick={this.onUpdateCommunityButtonClick.bind(this,rowData.id)}>修改</Button>
                             </div>
                         </div>
                     </div>

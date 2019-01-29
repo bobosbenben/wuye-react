@@ -12,16 +12,17 @@ import Evaluate from "./component/Evaluate";
 import MineCommunity from './component/MineCommunity';
 import AddMineCommunity from './component/AddMineCommunity';
 import UpdateMineCommunity from './component/UpdateMineCommunity';
+import ResultForProblemReportSuccess from './component/utils/ResultForProblemReportSuccess';
 
-import {Route, BrowserRouter, Switch, Redirect, HashRouter} from 'react-router-dom';
+import {Route, Switch, Redirect, HashRouter} from 'react-router-dom';
 
 const PrimaryLayout = () => (
-    <div className="primary-layout">
+    <div className="primary-layout" style={{height:'100%'}}>
         {/*<header> Our React Router 4 App </header>*/}
         <main style={{height: '100%'}}>
             <Switch>
                 <Route path="/" exact component={HomePage} />
-                <Route path="/baoxiu/:openid?" exact component={BaoXiu} />
+                <Route path="/baoxiu/:openid?/:addressid?" exact component={BaoXiu} />
                 <Route path="/tousu" component={TouSu} />
                 <Route path="/xinxi" component={XinXi} />
                 <Route path="/liebiao" component={LieBiao} />
@@ -32,6 +33,7 @@ const PrimaryLayout = () => (
                 <Route path={"/minecommunity/:openid?/:parameter?"} component={MineCommunity}/>
                 <Route path="/addminecommunity/:openid?/:parameter?" component={AddMineCommunity}/>
                 <Route path={"/updateminecommunity/:openid"} component={UpdateMineCommunity}/>
+                <Route path={"/problemreportsuccess/:openid"} component={ResultForProblemReportSuccess} />
                 <Redirect to="/"/>
             </Switch>
         </main>
