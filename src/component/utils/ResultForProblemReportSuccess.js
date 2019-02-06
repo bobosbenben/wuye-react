@@ -16,7 +16,6 @@ class ResultForProblemReportSuccess extends Component {
 
     onButtonClick = ()=>{
         // this.props.history.push()
-        console.log('前往哪个页面呢？');
     };
 
     render() {

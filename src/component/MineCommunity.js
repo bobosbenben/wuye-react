@@ -9,7 +9,7 @@ class MineCommunity extends Component {
     constructor(props) {
         super(props);
         const dataSource = new ListView.DataSource({
-            rowHasChanged: (row1, row2) => row1 !== row2,
+            rowHasChanged: (row1, row2) => row1 !== row2,//指定我们更新row的策略，一般来说都是prevRowData和nextRowData不相等时更新row
         });
 
         this.state = {
@@ -19,22 +19,14 @@ class MineCommunity extends Component {
             pageSize:10,
             hasMore: true,
             openid: this.props.match.params.openid,
+            parameter: this.props.match.params.parameter,
             fromFaultReport: this.props.match.params.parameter === '1',
         };
+        this._data = [];
 
     }
 
     componentDidMount() {
-        // you can scroll to the specified position
-        // setTimeout(() => this.lv.scrollTo(0, 120), 800);
-        // simulate initial Ajax
-        // setTimeout(() => {
-        //     this.rData = genData();
-        //     this.setState({
-        //         dataSource: this.state.dataSource.cloneWithRows(this.rData),
-        //         isLoading: false,
-        //     });
-        // }, 600);
         this.fetchData(currentPageNum);
     }
 
@@ -58,8 +50,9 @@ class MineCommunity extends Component {
             .then(response => response.json())
             .then(data =>{
                 if (data.success === true){
+                    this._data = this._data.concat(data.data);
                     this.setState({
-                        dataSource: this.state.dataSource.cloneWithRows(data.data),
+                        dataSource: this.state.dataSource.cloneWithRows(this._data),
                         isLoading:false
                     });
                     if (data.total>pageNum*this.state.pageSize) this.setState({hasMore:false});
@@ -98,7 +91,7 @@ class MineCommunity extends Component {
     };
 
     onUpdateCommunityButtonClick=(id)=>{
-        let path = '/updateminecommunity/'+id;
+        let path = '/updateminecommunity/'+this.state.openid+'/'+this.state.parameter+'/'+id;
         this.props.history.push(path);
     };
 
@@ -150,7 +143,7 @@ class MineCommunity extends Component {
                             </div>
                             <WhiteSpace size="xs" onClick={this.onChooseClick.bind(this,rowData.id)}/>
                             <div style={{width:'100%',display:'flex',flexDirection:'row',justifyContent:'flex-end'}}>
-                                <div style={{width:'70%'}} onClick={this.onChooseClick.bind(this,rowData.id)} />
+                                <div style={{width:'50%'}} onClick={this.onChooseClick.bind(this,rowData.id)} />
                                 <Button type="ghost" size="small" onClick={this.onUpdateCommunityButtonClick.bind(this,rowData.id)}>修改</Button>
                             </div>
                         </div>

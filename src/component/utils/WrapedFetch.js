@@ -60,8 +60,9 @@ export const wrapedFetch = (url,params={},showSuccessMessage=false,messageConten
             .then((data)=>{
                 if(data !== null && data !== undefined){
                     if (data.success === false){
-                        reject({
+                        resolve({
                             code: 200,
+                            success: false,
                             message: data.msg
                         });
                     }

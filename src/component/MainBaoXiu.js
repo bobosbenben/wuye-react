@@ -123,7 +123,7 @@ class MainBaoXiu extends Component {
                         <div>
                             <img src={this.state.userInfo == null?'':this.state.userInfo.headImgUrl} width='64px' height='64px'/>
                         </div>
-                        <Link to={{pathname:'/minecommunity/'+this.state.openid,state:{fromFaultReport:true}}} style={{display:'flex',flexDirection:'row',justifyContent:'space-between',width:'100%'}}>
+                        <Link to={{pathname:'/minecommunity/'+this.state.openid+'/1',state:{fromFaultReport:true}}} style={{display:'flex',flexDirection:'row',justifyContent:'space-between',width:'100%'}}>
                             <div style={{display:'flex',flexDirection:'column',width:'100%',paddingLeft:'10px'}}>
                                 <div className="head-title">{this.state.addressInfo.building+this.state.addressInfo.unit+this.state.addressInfo.room}</div>
                                 <div className="head-description" style={{marginTop:'5px'}}>

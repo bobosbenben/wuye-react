@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { WhiteSpace, ListView } from 'antd-mobile';
-import { Popup, Gallery } from 'react-weui';
 
 const data = [
     {
         id: 1,
-        img: 'https://duobifuwu-1252535629.cos.ap-beijing.myqcloud.com/ceshi.png',
+        img: 'https://zos.alipayobjects.com/rmsportal/XmwCzSeJiqpkuMB.png',
         title: 'Meet hotel',
         status: '已处理',
         des: '不是所有的兼职汪都需要风吹日晒不是所有的兼职汪都需要风吹日晒不是所有的兼职汪都需要风吹日晒不是所有的兼职汪都需要风吹日晒',
@@ -129,9 +128,9 @@ class LieBiao extends Component {
                     </div>
                     <div style={{ padding: '10px 0' }}>
                         <div style={{ lineHeight: 1 }}>
-                            <div style={{ marginBottom: '8px',color:'#666',fontSize:14,lineHeight:'20px'}}>{obj.des}</div>
+                            <div style={{ color:'#666',fontSize:14,lineHeight:'20px',textAlign:'left'}}>{obj.des}</div>
                         </div>
-                        {/*<div style={{display:'flex', flexWrap:'wrap'}} onClick={this.onImageClick}>*/}
+                        {/*<div style={{display:'flex', flexWrap:'wrap',paddingTop:'8px'}} onClick={this.onImageClick}>*/}
                             {/*<img style={{ maxHeight: '64px', marginRight: '10px',maxWidth:'100%' }} src={obj.img} alt="" />*/}
                             {/*<img style={{ maxHeight: '64px', marginRight: '10px',maxWidth:'100%' }} src={obj.img} alt="" />*/}
                             {/*<img style={{ maxHeight: '64px', marginRight: '10px',maxWidth:'100%' }} src={obj.img} alt="" />*/}
@@ -141,8 +140,6 @@ class LieBiao extends Component {
                 </div>
             );
         };
-
-        let imgSrc = 'https://duobifuwu-1252535629.cos.ap-beijing.myqcloud.com/ceshi.png';
 
         return (
             <div>
@@ -163,14 +160,6 @@ class LieBiao extends Component {
                     onEndReached={this.onEndReached}
                     onEndReachedThreshold={10}
                 />
-                {/*<Popup*/}
-                    {/*show={this.state.showSingle}*/}
-                    {/*onRequestClose={e=>this.setState({showSingle: false})}*/}
-                {/*>*/}
-                    {/*<div style={{height: '80vh', overflow: 'scroll'}}>*/}
-                        {/*<Gallery src={imgSrc} show={this.state.showSingle}/>*/}
-                    {/*</div>*/}
-                {/*</Popup>*/}
             </div>
         );
     }
